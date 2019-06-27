@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="style.css" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    </head>
+    <div id="app" v-cloak>
+        <v-app>
+            <v-content>
+
+                <!-- v-toolbar eventaully -->
+                <v-toolbar>
+                    <v-toolbar-side-icon @click="drawer = !drawer"></v-toolbar-side-icon>
+                    <v-toolbar-title>A Collector's Blog</v-toolbar-title>
+                    <v-spacer></v-spacer>
+                    <v-toolbar-items>
+                        <v-btn flat v-on:click="page = 'blog'">blog</v-btn>
+                        <v-btn flat v-on:click="page = 'post'">post</v-btn>
+                    </v-toolbar-items>
+                </v-toolbar>
+                <v-navigation-drawer app v-model="drawer">
+                    <v-list>
+                        <v-list-tile v-for="post in posts">
+                            <v-list-content>{{post.title}}</v-list-content>
+                        </v-list-tile>
+                    </v-list>
+                </v-navigation-drawer>
+
+                <v-container v-if="page == 'blog'" class="text-xs-center">
+                    <v-layout>
+                        <v-flex xs3></v-flex>
+                        <v-flex xs6>
+                                <v-menu offset-y>
+                                    <template v-slot:activator="{ on }">
+                                        <v-btn
+                                            v-on="on">
+                                            {{selected_category}}
+                                        </v-btn>
+                                    </template>
+                                    <v-list>
+                                        <v-list-tile
+                                            v-for="category in categories"
+                                            @click="selected_category=category">
+                                            <v-list-tile-title>{{category}}</v-list-tile-title>
+                                        </v-list-tile>
+                                    </v-list>
+                                </v-menu><br>
+                                <div v-for="post in sorted_posts">
+                                    <v-card flat color="rgba(0,255,255,0)">
+                                        <v-img 
+                                            max-height="300px"
+                                            v-bind:src="post.image"
+                                            contain>
+                                        </v-img>
+                                    </v-card>
+                                    <v-card>
+                                        <v-card-title>
+                                            {{post.title}}
+                                            <v-spacer></v-spacer>
+                                            {{post.date}}
+                                        </v-card-title>
+                                    </v-card>
+                                    <v-card>
+                                        <v-card-text>
+                                            {{post.author}}
+                                        </v-card-text>
+                                        <v-card-text>
+                                            {{post.text}}
+                                        </v-card-text>
+                                        <v-card-text>
+                                            {{post.category}}
+                                        </v-card-text>
+                                    </v-card>
+                                    <br>
+                                </div>
+                        </v-flex>
+                        <v-flex xs3></v-flex>
+                        </v-flex>
+                </v-container>
+                <br>
+
+                <div v-if="page == 'post'">
+                    <div>Create Post</div>
+                    Enter title: <input v-model="new_title" type="text"><br>
+                    Enter author: <input v-model="new_author" type="text"><br>
+                    Pick a category:
+                    <select>
+                        <option
+                            v-for="category in categories"
+                            v-bind:value="category">
+                            {{category}}
+                        </option>
+                    </select><br>
+                    Enter an image link: <input v-model="new_image" type="text"><br>
+                    Enter text: <textarea v-model="new_text" type="text"></textarea><br>
+                    <button v-on:click="addPost()">post</button>
+                </div>
+            </v-content>
+        </v-app>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
+    <script src="code.js"></script>
+</html>
