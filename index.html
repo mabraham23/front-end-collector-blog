@@ -49,6 +49,12 @@
                                 </v-menu><br>
                                 <div v-for="post in sorted_posts">
                                     <v-card flat color="rgba(0,255,255,0)">
+                                        <v-btn
+                                            icon
+                                            class="right"
+                                            @click="deletePost(post)">
+                                            <v-icon color="red">delete</v-icon>
+                                        </v-btn>
                                         <v-img 
                                             max-height="300px"
                                             v-bind:src="post.image"
