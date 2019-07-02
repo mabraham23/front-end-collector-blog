@@ -122,16 +122,16 @@ var app = new Vue ( {
                 }
             })
         },
-         editPost: function(post) {
-            this.page = "edit"
-            
-            this.edit_title = post.title,
-            this.edit_author = post.author
-            this.edit_category = post.category,
-            this.edit_image = post.image,
-            this.edit_text = post.text
-            this.edit_id = post._id
-         },
+        editPost: function(post) {
+        this.page = "edit"
+        
+        this.edit_title = post.title,
+        this.edit_author = post.author
+        this.edit_category = post.category,
+        this.edit_image = post.image,
+        this.edit_text = post.text
+        this.edit_id = post._id
+        },
 
 
         updatePost: function(post) {
