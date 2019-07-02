@@ -57,7 +57,8 @@
                                         </v-btn>
                                         <v-btn
                                             icon
-                                            class="right">
+                                            class="right"
+                                            @click="editPost(post)">
                                             <v-icon>edit</v-icon>
                                         </v-btn>
                                         <v-img 
@@ -100,13 +101,29 @@
                     <select>
                         <option
                             v-for="category in categories"
-                            v-bind:value="category">
+                            v-bind:value="new_category">
                             {{category}}
                         </option>
                     </select><br>
                     Enter an image link: <input v-model="new_image" type="text"><br>
                     Enter text: <textarea v-model="new_text" type="text"></textarea><br>
                     <button v-on:click="addPost()">post</button>
+                </div>
+                <div v-if="page == 'edit'">
+                    <div>Create Post</div>
+                    Enter title: <input v-model="edit_title" type="text"><br>
+                    Enter author: <input v-model="edit_author" type="text"><br>
+                    Pick a category:
+                    <select>
+                        <option
+                            v-for="category in categories"
+                            v-bind:value="edit_category">
+                            {{category}}
+                        </option>
+                    </select><br>
+                    Enter an image link: <input v-model="edit_image" type="text"><br>
+                    Enter text: <textarea v-model="edit_text" type="text"></textarea><br>
+                    <button v-on:click="updatePost()">post</button>
                 </div>
             </v-content>
         </v-app>

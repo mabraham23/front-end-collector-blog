@@ -22,10 +22,18 @@ var app = new Vue ( {
         posts: [ ],
         new_title: "",
         new_author: "",
-        new_category: "all",
+        new_category: "",
         new_image: "",
         new_text: "",
         secret_keycode: "",
+
+        
+        edit_title: "",
+        edit_author: "",
+        edit_category: "",
+        edit_image: "",
+        edit_text: "",
+        edit_id: "",
     },
 
     created: function() {
@@ -113,6 +121,54 @@ var app = new Vue ( {
                     })
                 }
             })
+        },
+         editPost: function(post) {
+            this.page = "edit"
+            
+            this.edit_title = post.title,
+            this.edit_author = post.author
+            this.edit_category = post.category,
+            this.edit_image = post.image,
+            this.edit_text = post.text
+            this.edit_id = post._id
+         },
+
+
+        updatePost: function(post) {
+            edited_post = {
+                title: this.edit_title,
+                author: this.edit_author,
+                category: this.edit_category,
+                image: this.edit_image,
+                text: this.edit_text,
+            }
+            fetch(`${server_url}/posts/${this.edit_id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-type": "application/json"
+                },
+                body: JSON.stringify(edited_post)
+            }).then(function(response) {
+                if(response.status == 404 ) {
+                    response.json().then(function(data) {
+                        alert(data.msg);
+                    });
+                }
+                else if(response.status == 400) {
+                    response.json().then(function(data) {
+                        alert(data.msg);
+                    });
+                }
+                else if (response.status == 200) {
+                    app.edit_title = "",
+                    app.edit_author = "",
+                    app.edit_category = "",
+                    app.edit_image = "",
+                    app.edit_text = "",
+                    app.getPosts();
+                    app.page = "blog"
+                }
+            });
         }
     },
 
@@ -129,6 +185,6 @@ var app = new Vue ( {
         },
         show_delete: function() {
             return this.secret_keycode == "DEL";
-        }
+        },
     }
 } )
